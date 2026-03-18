@@ -1,9 +1,9 @@
-resource "aws_iam_user" "demo-iam" {
-  name = "demo-user"
-  path = "/system/"
+# resource "aws_iam_user" "demo-iam" {
+#   name = "demo-user"
+#   path = "/system/"
 
-tags = {
-  team="DEv"
-  Config_Platform="terraform"
-}
-}
+# tags = {
+#   team="DEv"
+#   Config_Platform="terraform"
+# }
+# }
