@@ -1,0 +1,55 @@
+pipeline{
+    agent any
+    environment{
+        platform="windows"
+        hostuser="heisenberg"
+    }
+    parameters{
+        string(name: 'username' ,defaultValue:'',description:'Enter a Username')
+        choice(name: 'Env' ,choices:['dev','qa','pro','test'],description:'Select the env: ')
+        booleanParam(name:'deploy',defaultValue:true,description:'deploy after build')
+    }
+    stages{
+    stage("parallel execution"){
+        parallel{
+        stage("Build"){
+            steps{
+                echo "${params.username}"
+            }
+        }
+        stage("test"){
+            steps{
+                catchError(buildResult: 'SUCCESS', message: 'the stage contains error', stageResult: 'FAILURE'){
+                   echo "${params.Env}"
+                }
+            }
+            post{
+                    success{
+                        echo 'success'
+                    }
+                    failure{
+                        echo 'falied'
+                    }
+        
+              }
+        }
+        stage("deploy"){
+            steps{
+                echo "Deploy : ${params.deploy}"
+            }
+        }
+        }
+    }
+    }
+    post{
+        success{
+            echo 'success'
+        }
+        failure{
+            echo 'falied'
+        }
+        always{
+            echo 'completed'
+        }
+    }
+}
